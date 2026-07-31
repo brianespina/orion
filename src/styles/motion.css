@@ -1,0 +1,105 @@
+/* Orion Creators — scroll reveals and scroll-linked motion.
+ *
+ * `js-reveal` is set on <html> before first paint, and only when the visitor
+ * has not asked for reduced motion. Everything that hides an element is gated
+ * behind it, so the page stays fully legible if the observer never runs.
+ */
+
+/* Above-the-fold content animates on load with no JS involved, so the first
+   paint is never blocked on a script. Only put it on wrappers, never on
+   something with a hover transform — the fill mode would win over it. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-intro] {
+    animation: orionReveal 0.75s var(--ease-soft) var(--reveal-delay, 0s) both;
+  }
+}
+
+.js-reveal [data-reveal]:not(.is-revealed) {
+  opacity: 0;
+}
+
+.js-reveal [data-reveal].is-revealed {
+  animation: orionReveal 0.75s var(--ease-soft) var(--reveal-delay, 0s) both;
+}
+
+/* Once the reveal has played, drop the animation so it stops overriding
+   declared values — the card hover lifts depend on that. */
+.js-reveal [data-reveal].is-settled {
+  animation: none;
+}
+
+/* Opacity and transform only, so every reveal stays on the compositor.
+   The blur-in variant below is opt-in via `data-reveal="soft"` because
+   animating `filter` re-rasters the element every frame — worth it on a
+   single image card, not on two dozen text blocks. */
+@keyframes orionReveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.js-reveal [data-reveal="soft"].is-revealed {
+  animation-name: orionRevealSoft;
+}
+
+@keyframes orionRevealSoft {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(1.02);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* Direct children of a group come in one after another. Works for both
+   `data-intro` and `data-reveal` children. */
+[data-reveal-group] > *:nth-child(2) {
+  --reveal-delay: 0.08s;
+}
+
+[data-reveal-group] > *:nth-child(3) {
+  --reveal-delay: 0.16s;
+}
+
+[data-reveal-group] > *:nth-child(4) {
+  --reveal-delay: 0.24s;
+}
+
+[data-reveal-group] > *:nth-child(5) {
+  --reveal-delay: 0.32s;
+}
+
+[data-reveal-group] > *:nth-child(6) {
+  --reveal-delay: 0.4s;
+}
+
+/* ---- Scroll-linked keyframes ---------------------------------------- */
+/* Used only inside `@supports (animation-timeline: …)` guards, so browsers
+   without scroll-driven animations never run them on the document timeline. */
+
+@keyframes orionScrollProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes orionPhotoDrift {
+  from {
+    transform: scale(1.12) translateY(-1.6%);
+  }
+  to {
+    transform: scale(1.12) translateY(1.6%);
+  }
+}

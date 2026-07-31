@@ -1,0 +1,217 @@
+---
+import { Image } from "astro:assets";
+import logoMark from "../assets/logo-mark.png";
+import Starfield from "./Starfield.astro";
+import IconAligned from "./icons/IconAligned.astro";
+import IconCuratedMatches from "./icons/IconCuratedMatches.astro";
+import IconFullService from "./icons/IconFullService.astro";
+
+const pillars = [
+  {
+    Icon: IconCuratedMatches,
+    title: "Curated matches",
+    body: "The right creators for your brand, not just the loudest voices.",
+  },
+  {
+    Icon: IconFullService,
+    title: "Full-service",
+    body: "Everything from strategy to reporting, managed by one team.",
+  },
+  {
+    Icon: IconAligned,
+    title: "Aligned end to end",
+    body: "From brief to results, every step stays aligned.",
+  },
+];
+---
+
+<section class="hero" id="top">
+  <div class="hero__nebula" aria-hidden="true"></div>
+  <Starfield count={110} />
+
+  <div class="hero__content" data-reveal-group>
+    <Image
+      class="hero__mark"
+      src={logoMark}
+      alt="Orion"
+      width={84}
+      densities={[1, 2]}
+      loading="eager"
+      data-intro
+    />
+    <p class="eyebrow hero__eyebrow" data-intro>Brand Partnerships · Influencer Marketing</p>
+    <h1 class="hero__title" data-intro>
+      Where brands &amp; <br />creators <span class="gradient-text">align</span>
+    </h1>
+    <p class="hero__support" data-intro>
+      Finding the right creator is only the beginning. We turn creator partnerships into results.
+    </p>
+    <div class="hero__actions" data-intro>
+      <button class="btn btn-primary btn-md" type="button" data-contact-trigger>Partner with us</button>
+      <a class="btn btn-outline btn-md" href="#process">How it works</a>
+    </div>
+  </div>
+
+  <div class="hero__divider" data-reveal></div>
+
+  <ul class="pillars" data-reveal-group>
+    {
+      pillars.map(({ Icon, title, body }) => (
+        <li class="pillar" data-reveal>
+          <span class="pillar__icon">
+            <Icon class="icon--lg" />
+          </span>
+          <p class="pillar__title">{title}</p>
+          <p class="pillar__body">{body}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 130px var(--gutter) 110px;
+  }
+
+  .hero__nebula {
+    position: absolute;
+    left: 50%;
+    bottom: -220px;
+    z-index: 1;
+    width: 1200px;
+    height: 540px;
+    max-width: 200vw;
+    transform: translateX(-50%);
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      rgba(249, 143, 19, 0.16),
+      rgba(249, 143, 19, 0.03) 58%,
+      transparent 74%
+    );
+    animation: nebulaBreathe 14s ease-in-out infinite;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 3;
+    max-width: var(--width-hero);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero__mark {
+    width: 84px;
+    height: auto;
+    margin: 0 auto 32px;
+  }
+
+  .hero__eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    margin-bottom: 26px;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--font-size-hero);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin-bottom: 28px;
+    text-wrap: balance;
+  }
+
+  .hero__support {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-text-support);
+    max-width: 560px;
+    margin: 0 auto 44px;
+    text-wrap: pretty;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .hero__divider {
+    position: relative;
+    z-index: 3;
+    max-width: var(--width-pillars);
+    margin: 80px auto 0;
+    border-top: var(--border-default);
+  }
+
+  .pillars {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: var(--width-pillars);
+    margin: 16px auto 0;
+    padding: 8px 0 0;
+    list-style: none;
+  }
+
+  .pillar {
+    text-align: center;
+  }
+
+  .pillar__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    margin-bottom: 14px;
+  }
+
+  .pillar__title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .pillar__body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      padding-top: 88px;
+      padding-bottom: 80px;
+    }
+
+    .hero__divider {
+      margin-top: 56px;
+    }
+
+    .pillars {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      margin-top: 36px;
+    }
+
+    .hero__actions .btn {
+      flex: 1 1 240px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    /* Let the headline balance itself rather than break on the designed line. */
+    .hero__title br {
+      display: none;
+    }
+  }
+</style>

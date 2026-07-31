@@ -1,0 +1,12 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg class:list={["icon", className]} viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M4 9.5v5a1 1 0 001 1h1.6l1 4h2l-.8-4L18 20V4L8.8 9.5H5a1 1 0 00-1 1z"></path>
+  <path d="M20.5 9a4 4 0 010 6"></path>
+</svg>

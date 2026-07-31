@@ -1,0 +1,71 @@
+---
+import Starfield from "./Starfield.astro";
+---
+
+<section class="cta">
+  <div class="cta__glow" aria-hidden="true"></div>
+  <Starfield count={70} />
+  <div class="cta__inner" data-reveal-group>
+    <h2 class="cta__title" data-reveal>Let's align!</h2>
+    <p class="cta__body" data-reveal>
+      Tell us what you need. We'll find the creators to make it happen.
+    </p>
+    <button class="btn btn-primary btn-wide" type="button" data-contact-trigger data-reveal>
+      Start a conversation
+    </button>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    z-index: 3;
+    overflow: hidden;
+    padding: 110px var(--gutter);
+    text-align: center;
+  }
+
+  .cta__glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 900px;
+    height: 500px;
+    max-width: 200vw;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background: radial-gradient(closest-side, rgba(249, 143, 19, 0.2), transparent 70%);
+    animation: nebulaDrift2 20s ease-in-out infinite;
+  }
+
+  .cta__inner {
+    position: relative;
+    /* Above the starfield, which sits at z-index 1. */
+    z-index: 3;
+  }
+
+  .cta__title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--font-size-h2-cta);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin-bottom: 18px;
+  }
+
+  .cta__body {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--color-text-body);
+    max-width: 520px;
+    margin: 0 auto 36px;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 900px) {
+    .cta {
+      padding-block: 80px;
+    }
+  }
+</style>

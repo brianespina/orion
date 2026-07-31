@@ -1,0 +1,259 @@
+---
+import { Image } from "astro:assets";
+import logoHorizontal from "../assets/logo-horizontal.png";
+import { navLinks, site } from "../data/site";
+
+interface Props {
+  /** "" on the home page, "/" anywhere else, so anchors always resolve. */
+  linkBase?: string;
+}
+
+const { linkBase = "" } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="site-header__bar">
+    <a class="site-header__brand" href={`${linkBase}#top`}>
+      <Image
+        class="site-header__logo"
+        src={logoHorizontal}
+        alt={site.name}
+        height={28}
+        densities={[1, 2]}
+        loading="eager"
+      />
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      {
+        navLinks.map((link) => (
+          <a class="link-quiet site-nav__link" href={`${linkBase}${link.hash}`}>
+            {link.label}
+          </a>
+        ))
+      }
+      <button class="link-quiet site-nav__link" type="button" data-contact-trigger>Contact</button>
+      <button class="btn btn-primary btn-sm" type="button" data-contact-trigger>Work with us</button>
+    </nav>
+
+    <button
+      class="site-header__toggle"
+      type="button"
+      aria-controls="mobile-nav"
+      aria-expanded="false"
+      data-nav-toggle
+    >
+      <span class="visually-hidden">Menu</span>
+      <span class="site-header__burger"></span>
+    </button>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary (mobile)" hidden>
+    {
+      navLinks.map((link) => (
+        <a class="mobile-nav__link" href={`${linkBase}${link.hash}`} data-nav-close>
+          {link.label}
+        </a>
+      ))
+    }
+    <button class="mobile-nav__link" type="button" data-contact-trigger data-nav-close>Contact</button>
+    <button class="btn btn-primary btn-md mobile-nav__cta" type="button" data-contact-trigger data-nav-close>
+      Work with us
+    </button>
+  </nav>
+
+  <div class="site-header__progress" aria-hidden="true"></div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: var(--color-header-surface);
+    backdrop-filter: blur(14px);
+    border-bottom: var(--border-hairline);
+  }
+
+  /* Reading-progress hairline. Scroll-driven where supported; elsewhere it
+     stays at scaleX(0) and is simply never seen. */
+  .site-header__progress {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: var(--gradient-accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .site-header__progress {
+        animation: orionScrollProgress linear both;
+        animation-timeline: scroll(root block);
+      }
+    }
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    padding-inline: var(--gutter-bar);
+  }
+
+  .site-header__brand {
+    display: flex;
+    align-items: center;
+  }
+
+  .site-header__logo {
+    height: 28px;
+    width: auto;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 38px;
+  }
+
+  .site-nav__link {
+    font-size: 14px;
+  }
+
+  /* ---- Mobile menu -------------------------------------------------- */
+
+  .site-header__toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .site-header__burger,
+  .site-header__burger::before,
+  .site-header__burger::after {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background: var(--color-offwhite);
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+
+  .site-header__burger::before,
+  .site-header__burger::after {
+    content: "";
+    position: relative;
+  }
+
+  .site-header__burger::before {
+    top: -7px;
+  }
+
+  .site-header__burger::after {
+    top: 6px;
+  }
+
+  [aria-expanded="true"] .site-header__burger {
+    background: transparent;
+  }
+
+  [aria-expanded="true"] .site-header__burger::before {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  [aria-expanded="true"] .site-header__burger::after {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px var(--gutter-bar) 28px;
+    border-top: var(--border-hairline);
+    animation: orionFadeIn 0.18s ease both;
+  }
+
+  .mobile-nav[hidden] {
+    display: none;
+  }
+
+  .mobile-nav__link {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 16px;
+    text-align: left;
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    border-bottom: var(--border-hairline);
+    padding: 16px 0;
+    cursor: pointer;
+    transition: var(--transition-link);
+  }
+
+  .mobile-nav__link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .mobile-nav__cta {
+    margin-top: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .site-nav {
+      display: none;
+    }
+
+    .site-header__toggle {
+      display: flex;
+    }
+
+    .mobile-nav:not([hidden]) {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const panel = document.querySelector<HTMLElement>("#mobile-nav");
+
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(panel.hidden);
+    });
+
+    for (const item of panel.querySelectorAll("[data-nav-close]")) {
+      item.addEventListener("click", () => setOpen(false));
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !panel.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // The panel only exists below the mobile breakpoint; reset it on resize up.
+    const desktop = window.matchMedia("(min-width: 901px)");
+    desktop.addEventListener("change", (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

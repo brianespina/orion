@@ -1,0 +1,122 @@
+---
+import IconBrands from "./icons/IconBrands.astro";
+import IconCreators from "./icons/IconCreators.astro";
+
+const cards = [
+  {
+    Icon: IconBrands,
+    title: "Brands",
+    body: "We connect you with creators who fit your brand, and help bring campaigns to life.",
+    featured: true,
+  },
+  {
+    Icon: IconCreators,
+    title: "Creators",
+    body: "We connect you with brand opportunities that align with your content and audience.",
+    featured: false,
+  },
+];
+---
+
+<section class="services shell" id="services">
+  <div class="section-heading services__heading" data-reveal-group>
+    <p class="eyebrow" data-reveal>What we do</p>
+    <h2 class="section-title" data-reveal>Two ways we create alignment</h2>
+  </div>
+
+  <ul class="services__grid" data-reveal-group>
+    {
+      cards.map(({ Icon, title, body, featured }) => (
+        <li class:list={["service-card", featured && "service-card--featured"]} data-reveal>
+          <span class="service-card__tile">
+            <Icon class="icon--md" />
+          </span>
+          <h3 class="service-card__title">{title}</h3>
+          <p class="service-card__body">{body}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .services {
+    position: relative;
+    z-index: 3;
+    padding-bottom: 100px;
+  }
+
+  .services__heading {
+    margin-bottom: 52px;
+  }
+
+  .services__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service-card {
+    border: var(--border-default);
+    border-radius: var(--radius-card);
+    background: var(--color-surface-card);
+    padding: 44px;
+    transition: transform 0.22s ease, border-color 0.22s ease;
+  }
+
+  .service-card--featured {
+    background: var(--gradient-card-warm);
+  }
+
+  .service-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-accent-hover);
+  }
+
+  .service-card__tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border: var(--border-accent);
+    border-radius: var(--radius-tile);
+    background: rgba(249, 189, 119, 0.12);
+    margin-bottom: 26px;
+  }
+
+  .service-card__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--color-text-primary);
+    margin-bottom: 14px;
+  }
+
+  .service-card__body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--color-text-body);
+  }
+
+  @media (max-width: 900px) {
+    .services {
+      padding-bottom: 72px;
+    }
+
+    .services__heading {
+      margin-bottom: 36px;
+    }
+
+    .services__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .service-card {
+      padding: 32px;
+    }
+  }
+</style>

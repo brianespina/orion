@@ -1,0 +1,108 @@
+---
+const steps = [
+  {
+    number: "01",
+    title: "Understand",
+    body: "We understand your campaign goals, audience, and brand.",
+  },
+  {
+    number: "02",
+    title: "Match",
+    body: "We source and shortlist creators whose content and audiences align with your brand.",
+  },
+  {
+    number: "03",
+    title: "Execute",
+    body: "We manage campaigns and deliver results.",
+  },
+];
+---
+
+<section class="process" id="process">
+  <div class="shell process__inner">
+    <div class="section-heading process__heading" data-reveal-group>
+      <p class="eyebrow" data-reveal>How it works</p>
+      <h2 class="section-title" data-reveal>Our process</h2>
+    </div>
+
+    <ol class="process__grid" data-reveal-group>
+      {
+        steps.map((step) => (
+          <li class="step" data-reveal>
+            <p class="step__number">{step.number}</p>
+            <h3 class="step__title">{step.title}</h3>
+            <p class="step__body">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process {
+    position: relative;
+    z-index: 3;
+    background: var(--color-surface-subtle);
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  .process__inner {
+    padding-block: 90px;
+  }
+
+  .process__heading {
+    margin-bottom: 56px;
+  }
+
+  .process__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    padding: 8px;
+  }
+
+  .step__number {
+    font-family: var(--font-display);
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    color: var(--color-accent);
+    margin-bottom: 18px;
+  }
+
+  .step__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--color-text-primary);
+    margin-bottom: 12px;
+  }
+
+  .step__body {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--color-text-body);
+  }
+
+  @media (max-width: 900px) {
+    .process__inner {
+      padding-block: 72px;
+    }
+
+    .process__heading {
+      margin-bottom: 36px;
+    }
+
+    .process__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>

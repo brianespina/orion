@@ -1,0 +1,128 @@
+---
+import { Image } from "astro:assets";
+import logoMark from "../assets/logo-mark.png";
+import { credit, navLinks, site } from "../data/site";
+
+interface Props {
+  /** "" on the home page, "/" anywhere else, so anchors always resolve. */
+  linkBase?: string;
+}
+
+const { linkBase = "" } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__brand">
+    <Image class="site-footer__mark" src={logoMark} alt="Orion" width={38} densities={[1, 2]} />
+    <div>
+      <p class="site-footer__wordmark">ORION CREATORS</p>
+      <p class="site-footer__tagline">{site.tagline}</p>
+    </div>
+  </div>
+
+  <nav class="site-footer__nav" aria-label="Footer">
+    {
+      navLinks.map((link) => (
+        <a class="link-quiet site-footer__link" href={`${linkBase}${link.hash}`}>
+          {link.label}
+        </a>
+      ))
+    }
+    <button class="link-quiet site-footer__link" type="button" data-contact-trigger>Contact</button>
+  </nav>
+
+  <div class="site-footer__meta">
+    <p class="site-footer__copyright">© {year} {site.name}</p>
+    <p class="site-footer__credit">
+      Website by <a class="site-footer__credit-link" href={credit.url} target="_blank" rel="noopener noreferrer">{credit.name}</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    border-top: var(--border-footer);
+    background: var(--color-surface-subtle);
+    padding: 48px var(--gutter-bar);
+  }
+
+  .site-footer__brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .site-footer__mark {
+    width: 38px;
+    height: auto;
+  }
+
+  .site-footer__wordmark {
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: var(--color-text-primary);
+  }
+
+  .site-footer__tagline {
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  .site-footer__nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .site-footer__link {
+    font-size: 13px;
+  }
+
+  .site-footer__meta {
+    text-align: right;
+  }
+
+  .site-footer__copyright {
+    font-size: 12px;
+    color: var(--color-text-faint);
+  }
+
+  .site-footer__credit {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    margin-top: 6px;
+  }
+
+  .site-footer__credit-link {
+    color: var(--color-text-muted);
+    transition: var(--transition-link);
+  }
+
+  .site-footer__credit-link:hover {
+    color: var(--color-accent-light);
+  }
+
+  @media (max-width: 1080px) {
+    .site-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 28px;
+    }
+
+    .site-footer__nav {
+      flex-wrap: wrap;
+      gap: 20px 28px;
+    }
+
+    .site-footer__meta {
+      text-align: left;
+    }
+  }
+</style>

@@ -1,0 +1,209 @@
+/* Orion Creators — @font-face, reset, element defaults, keyframes. */
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/Poppins-Light.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/Poppins-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/Poppins-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Neue Plak";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/NeuePlak-WideLight.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Neue Plak";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/NeuePlak-WideRegular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Neue Plak";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/NeuePlak-WideSemiBold.woff2") format("woff2");
+}
+
+/* ---- Reset --------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Anchored sections must clear the sticky header. */
+  scroll-padding-top: var(--header-height);
+  /* Reserve the scrollbar so locking body scroll for the modal shifts nothing. */
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-offwhite);
+  font-family: var(--font-body);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Set while the contact modal is open so the page behind it cannot scroll. */
+body.is-modal-open {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: var(--transition-link);
+}
+
+a:hover {
+  color: var(--color-accent-light);
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+textarea {
+  font-family: var(--font-body);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-dim);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 3px;
+}
+
+/* ---- Utilities ------------------------------------------------------ */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- Keyframes ------------------------------------------------------ */
+
+@keyframes orionTwinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes nebulaBreathe {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.06);
+    opacity: 0.85;
+  }
+}
+
+@keyframes nebulaDrift2 {
+  0% {
+    transform: translate(2%, -1%) scale(1.05);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-3%, 2%) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(2%, -1%) scale(1.05);
+    opacity: 0.6;
+  }
+}
+
+@keyframes orionModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes orionFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

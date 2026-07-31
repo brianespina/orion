@@ -1,0 +1,196 @@
+/* Orion Creators — primitives shared by more than one section.
+   Anything used in a single section lives in that component's <style> block. */
+
+/* ---- Layout shell --------------------------------------------------- */
+
+.shell {
+  max-width: var(--width-section);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---- Section headings ----------------------------------------------- */
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+}
+
+.section-heading {
+  text-align: center;
+}
+
+.section-heading .eyebrow {
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--font-size-h2);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Buttons -------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition-lift);
+}
+
+.btn-primary,
+.btn-primary:hover {
+  background: var(--gradient-accent);
+  color: var(--color-text-on-accent);
+  font-weight: 500;
+}
+
+.btn-sm {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 11px 22px;
+}
+
+.btn-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lift-sm);
+}
+
+.btn-md {
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  padding: 16px 34px;
+}
+
+.btn-wide {
+  font-size: 15px;
+  padding: 16px 40px;
+}
+
+.btn-md:hover,
+.btn-wide:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift-lg);
+}
+
+.btn-block {
+  width: 100%;
+  border-radius: var(--radius-field);
+  padding: 16px;
+  font-size: 15px;
+}
+
+.btn-block:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lift-md);
+}
+
+.btn-outline,
+.btn-outline:hover {
+  color: var(--color-accent-light);
+}
+
+.btn-outline {
+  background: none;
+  border: var(--border-accent-outline);
+  /* Matches the body weight, so <a> and <button> variants render identically. */
+  font-weight: 300;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(249, 189, 119, 0.1);
+  border-color: rgba(249, 189, 119, 0.9);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---- Text links and link-shaped buttons ------------------------------ */
+
+.link-quiet {
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-link);
+}
+
+.link-quiet:hover {
+  color: var(--color-text-primary);
+}
+
+.skip-link {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 300;
+  padding: 12px 20px;
+  border-radius: var(--radius-field);
+  background: var(--gradient-accent);
+  color: var(--color-text-on-accent);
+  font-size: 14px;
+  font-weight: 500;
+  transform: translateY(-200%);
+  transition: transform 0.18s ease;
+}
+
+.skip-link:focus-visible {
+  transform: none;
+  color: var(--color-text-on-accent);
+}
+
+/* ---- Icons ---------------------------------------------------------- */
+
+/* Line icons drawn for this design: 24x24 viewBox, stroke only.
+   Size and stroke weight are set by the section that uses them. */
+.icon {
+  fill: none;
+  stroke: var(--color-accent-light);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon--lg {
+  width: 30px;
+  height: 30px;
+  stroke-width: 1.4;
+}
+
+.icon--md {
+  width: 26px;
+  height: 26px;
+  stroke-width: 1.5;
+}
+
+.icon--sm {
+  width: 19px;
+  height: 19px;
+  stroke-width: 1.5;
+}
+
+.icon__dot {
+  fill: var(--color-accent-light);
+  stroke: none;
+}

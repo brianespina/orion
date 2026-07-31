@@ -1,0 +1,89 @@
+/* Orion Creators — design tokens.
+   Values are authoritative and come straight from the design handoff. */
+
+:root {
+  /* ---- Surfaces ---------------------------------------------------- */
+  --color-bg: #08070b;
+  --color-surface-subtle: rgba(255, 255, 255, 0.015);
+  --color-surface-card: rgba(255, 255, 255, 0.02);
+  --color-surface-frame: #100c14;
+  --color-header-surface: rgba(8, 7, 11, 0.82);
+  --color-backdrop: rgba(4, 3, 6, 0.72);
+  --gradient-card-warm: linear-gradient(160deg, rgba(249, 143, 19, 0.07), rgba(255, 255, 255, 0.015));
+  --gradient-modal: linear-gradient(160deg, #141017, #0a080d);
+
+  /* ---- Text -------------------------------------------------------- */
+  --color-text-primary: #fff;
+  --color-text-bright: #e7e0d8;
+  --color-text-body: #a79e96;
+  --color-text-muted: #8f857b;
+  --color-text-support: #948b82;
+  --color-text-dim: #6b645c;
+  --color-text-faint: #5f5850;
+  --color-text-on-accent: #1a1206;
+  --color-offwhite: #efe9e2;
+
+  /* ---- Accent ------------------------------------------------------ */
+  --color-accent: #f98f13;
+  --color-accent-light: #f9bd77;
+  --gradient-accent: linear-gradient(120deg, #f9bd77, #f98f13);
+
+  /* ---- Borders ----------------------------------------------------- */
+  --border-hairline: 1px solid rgba(255, 255, 255, 0.06);
+  --border-footer: 1px solid rgba(255, 255, 255, 0.07);
+  --border-default: 1px solid rgba(255, 255, 255, 0.08);
+  --border-strong: 1px solid rgba(255, 255, 255, 0.12);
+  --border-modal: 1px solid rgba(255, 255, 255, 0.1);
+  --border-pill: 1px solid rgba(255, 255, 255, 0.14);
+  --border-accent: 1px solid rgba(249, 189, 119, 0.28);
+  --border-accent-soft: 1px solid rgba(249, 189, 119, 0.25);
+  --border-accent-outline: 1px solid rgba(249, 189, 119, 0.5);
+  --color-border-accent-hover: rgba(249, 189, 119, 0.35);
+
+  /* ---- Shadows ----------------------------------------------------- */
+  --shadow-modal: 0 40px 120px rgba(0, 0, 0, 0.7);
+  --shadow-lift-lg: 0 12px 30px rgba(249, 143, 19, 0.38);
+  --shadow-lift-md: 0 10px 26px rgba(249, 143, 19, 0.35);
+  --shadow-lift-sm: 0 8px 24px rgba(249, 143, 19, 0.35);
+  --shadow-focus-ring: 0 0 0 4px rgba(249, 143, 19, 0.12);
+
+  /* ---- Typography -------------------------------------------------- */
+  --font-display: "Neue Plak", "Poppins", system-ui, sans-serif;
+  --font-body: "Poppins", system-ui, sans-serif;
+
+  /* Display sizes hold their design value down to ~1000px, then scale. */
+  --font-size-hero: clamp(2.5rem, 7.2vw, 4.5rem); /* 40 → 72 */
+  --font-size-h2-cta: clamp(2rem, 4.8vw, 2.875rem); /* 32 → 46 */
+  --font-size-h2-lead: clamp(2rem, 4.6vw, 2.75rem); /* 32 → 44 */
+  --font-size-h2: clamp(1.875rem, 4.4vw, 2.625rem); /* 30 → 42 */
+
+  /* ---- Radii ------------------------------------------------------- */
+  --radius-pill: 999px;
+  --radius-modal: 26px;
+  --radius-image: 24px;
+  --radius-card: 22px;
+  --radius-panel: 20px;
+  --radius-tile: 16px;
+  --radius-field: 12px;
+
+  /* ---- Layout ------------------------------------------------------ */
+  --width-section: 1120px;
+  --width-modal: 1000px;
+  --width-hero: 960px;
+  --width-pillars: 900px;
+  --gutter: 44px;
+  --gutter-bar: 56px;
+  --header-height: 80px;
+
+  /* ---- Motion ------------------------------------------------------ */
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --transition-lift: transform 0.18s ease, box-shadow 0.18s ease;
+  --transition-link: color 0.18s ease;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --gutter: 24px;
+    --gutter-bar: 24px;
+  }
+}

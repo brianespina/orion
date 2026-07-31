@@ -1,0 +1,122 @@
+---
+import ContactModal from "../components/ContactModal.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { site } from "../data/site";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Prefix for in-page anchors: "" on the home page, "/" everywhere else. */
+  linkBase?: string;
+  noindex?: boolean;
+}
+
+const { title, description = site.description, linkBase = "", noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
+const socialImage = new URL("/social-card.jpg", Astro.site ?? site.url);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta name="theme-color" content="#08070b" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={socialImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="preload"
+      href="/fonts/Poppins-Light.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/NeuePlak-WideLight.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    {/* Runs before first paint so revealed elements never flash in unstyled. */}
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        root.classList.add("js-reveal");
+        // Safety net: if the reveal script never boots, show everything anyway.
+        setTimeout(function () {
+          if (!root.dataset.revealReady) root.classList.remove("js-reveal");
+        }, 3000);
+      })();
+    </script>
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header linkBase={linkBase} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer linkBase={linkBase} />
+    <ContactModal />
+
+    <script>
+      const root = document.documentElement;
+      const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+      if (root.classList.contains("js-reveal") && targets.length > 0) {
+        root.dataset.revealReady = "true";
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+
+              const element = entry.target as HTMLElement;
+              element.classList.add("is-revealed");
+              observer.unobserve(element);
+
+              // Settling removes the animation so it stops winning the cascade
+              // over declared values such as the card hover transform. The
+              // timer is a fallback for when animationend never arrives (a
+              // backgrounded tab, an interrupted animation).
+              const settle = () => element.classList.add("is-settled");
+              element.addEventListener("animationend", function onEnd(event) {
+                if (event.target !== element || !event.animationName.startsWith("orionReveal")) {
+                  return;
+                }
+                element.removeEventListener("animationend", onEnd);
+                settle();
+              });
+              setTimeout(settle, 1600);
+            }
+          },
+          { threshold: 0, rootMargin: "0px 0px -12% 0px" },
+        );
+
+        for (const target of targets) observer.observe(target);
+      }
+    </script>
+  </body>
+</html>

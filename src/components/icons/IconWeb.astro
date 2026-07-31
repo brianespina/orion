@@ -1,0 +1,13 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<!-- The design's ◉ mark, drawn in the same stroke style as the other icons. -->
+<svg class:list={["icon", className]} viewBox="0 0 24 24" aria-hidden="true">
+  <circle cx="12" cy="12" r="8.2"></circle>
+  <circle class="icon__dot" cx="12" cy="12" r="3.4"></circle>
+</svg>

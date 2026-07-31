@@ -1,0 +1,291 @@
+---
+import { Image } from "astro:assets";
+import logoMark from "../assets/logo-mark.png";
+import Starfield from "../components/Starfield.astro";
+import { site } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const destinations = [
+  { label: "About", hint: "Who Orion is", href: "/#about" },
+  { label: "What we do", hint: "Brands and creators", href: "/#services" },
+  { label: "Process", hint: "How we work", href: "/#process" },
+];
+---
+
+<BaseLayout
+  title={`Page not found — ${site.name}`}
+  description="That page has drifted off course. Head back to Orion Creators or get in touch."
+  linkBase="/"
+  noindex
+>
+  <section class="notfound">
+    <div class="notfound__nebula" aria-hidden="true"></div>
+    <Starfield count={140} />
+
+    <div class="notfound__content" data-reveal-group>
+      <Image
+        class="notfound__mark"
+        src={logoMark}
+        alt="Orion"
+        width={64}
+        densities={[1, 2]}
+        loading="eager"
+        data-intro
+      />
+      <p class="eyebrow notfound__eyebrow" data-intro>Error 404 · Off the star chart</p>
+      <p class="notfound__code gradient-text" aria-hidden="true" data-intro>404</p>
+      <h1 class="notfound__title" data-intro>This page drifted off course</h1>
+      <p class="notfound__support" data-intro>
+        The link you followed doesn't lead anywhere — but you're one step from the right
+        constellation.
+      </p>
+
+      <div class="notfound__actions" data-intro>
+        <a class="btn btn-primary btn-md" href="/">Back to home</a>
+        <button class="btn btn-outline btn-md" type="button" data-contact-trigger>
+          Start a conversation
+        </button>
+      </div>
+    </div>
+
+    <div class="notfound__divider" data-reveal></div>
+
+    <nav class="notfound__next" aria-label="Suggested sections">
+      <p class="notfound__next-label" data-reveal>Where to next</p>
+      <ul class="notfound__grid" data-reveal-group>
+        {
+          destinations.map((destination) => (
+            <li data-reveal>
+              <a class="destination" href={destination.href}>
+                <span class="destination__text">
+                  <span class="destination__label">{destination.label}</span>
+                  <span class="destination__hint">{destination.hint}</span>
+                </span>
+                <svg class="destination__arrow icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h13" />
+                  <path d="M13 6.5 18.5 12 13 17.5" />
+                </svg>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </section>
+
+  <p class="notfound__fallback">
+    Still lost? <button class="link-quiet notfound__fallback-link" type="button" data-contact-trigger
+      >Send us a message</button
+    > and we'll help you find it.
+  </p>
+</BaseLayout>
+
+<style>
+  .notfound {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Leaves room for the closing line and the footer, so the whole page
+       lands in one screen on desktop. */
+    min-height: calc(100svh - var(--header-height) - 200px);
+    padding: 96px var(--gutter) 72px;
+    text-align: center;
+  }
+
+  .notfound__nebula {
+    position: absolute;
+    left: 50%;
+    top: 34%;
+    z-index: 1;
+    width: 1100px;
+    height: 620px;
+    max-width: 200vw;
+    transform: translateX(-50%);
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      rgba(249, 143, 19, 0.18),
+      rgba(249, 143, 19, 0.04) 55%,
+      transparent 74%
+    );
+    animation: nebulaBreathe 14s ease-in-out infinite;
+  }
+
+  .notfound__content {
+    position: relative;
+    z-index: 3;
+    max-width: var(--width-hero);
+  }
+
+  .notfound__mark {
+    width: 64px;
+    height: auto;
+    margin: 0 auto 28px;
+    opacity: 0.9;
+  }
+
+  .notfound__eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    margin-bottom: 18px;
+  }
+
+  .notfound__code {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(6rem, 17vw, 11.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+  }
+
+  .notfound__title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--font-size-h2-lead);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin-bottom: 20px;
+    text-wrap: balance;
+  }
+
+  .notfound__support {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-text-support);
+    max-width: 520px;
+    margin: 0 auto 44px;
+    text-wrap: pretty;
+  }
+
+  .notfound__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .notfound__divider {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--width-pillars);
+    margin-top: 80px;
+    border-top: var(--border-default);
+  }
+
+  .notfound__next {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--width-pillars);
+    margin-top: 32px;
+  }
+
+  .notfound__next-label {
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+  }
+
+  .notfound__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .destination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 100%;
+    border: var(--border-default);
+    border-radius: var(--radius-tile);
+    background: var(--color-surface-card);
+    padding: 20px 22px;
+    text-align: left;
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+  }
+
+  .destination:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-border-accent-hover);
+    background: rgba(249, 143, 19, 0.05);
+  }
+
+  .destination__label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+  }
+
+  .destination__hint {
+    display: block;
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+  }
+
+  .destination__arrow {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.4;
+    transition: transform 0.22s ease;
+  }
+
+  .destination:hover .destination__arrow {
+    transform: translateX(3px);
+  }
+
+  .notfound__fallback {
+    padding: 0 var(--gutter) 72px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+
+  .notfound__fallback-link {
+    font-size: 14px;
+    color: var(--color-accent-light);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .notfound {
+      padding-top: 64px;
+      padding-bottom: 56px;
+    }
+
+    .notfound__divider {
+      margin-top: 56px;
+    }
+
+    .notfound__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .notfound__actions .btn {
+      flex: 1 1 240px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .notfound__eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.28em;
+    }
+  }
+</style>
