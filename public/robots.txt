@@ -1,4 +1,15 @@
 User-agent: *
 Allow: /
 
+# Cloudflare's managed robots.txt is injected ahead of this file at the edge
+# and disallows meta-externalagent, which stops Facebook fetching the link
+# preview. Crawlers merge groups that share a user-agent and take the least
+# restrictive rule when two of equal specificity conflict, so this allow is
+# here to override that block. Remove it if the managed block ever goes away.
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
 Sitemap: https://orioncreators.gg/sitemap-index.xml
