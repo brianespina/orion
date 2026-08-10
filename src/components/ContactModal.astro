@@ -299,6 +299,9 @@ const details = [
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+    /* Its own fields zero their margin, so the row carries the gap to the
+       next field itself — otherwise the name row sits flush against it. */
+    margin-bottom: 16px;
   }
 
   .field {
@@ -430,6 +433,8 @@ const details = [
     .contact-form__row {
       grid-template-columns: 1fr;
       gap: 0;
+      /* Stacked, the fields space themselves again — the row would double it. */
+      margin-bottom: 0;
     }
 
     .contact-form__row .field {
