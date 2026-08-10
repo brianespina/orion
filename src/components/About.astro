@@ -1,9 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import aboutStudio from "../assets/about-studio.jpg";
-import logoMark from "../assets/logo-mark.png";
+import aboutStudio from "../assets/about-studio.png";
 
-const attributes = ["Sleek", "Sophisticated", "Confident"];
 ---
 
 <section class="about shell" id="about">
@@ -16,21 +14,23 @@ const attributes = ["Sleek", "Sophisticated", "Confident"];
       align with their goals, and building campaigns that deliver. From creator sourcing to campaign
       execution, we handle every step from start to finish.
     </p>
-    <ul class="about__attributes" data-reveal>
-      {attributes.map((attribute) => <li class="about__pill">{attribute}</li>)}
-    </ul>
+    <div class="about__actions" data-reveal>
+      <button class="btn btn-primary btn-md" type="button" data-contact-trigger>
+        Start a campaign
+      </button>
+      <a class="btn btn-outline btn-md" href="#services">What we do</a>
+    </div>
   </div>
 
   <figure class="about__figure" data-reveal="soft">
     <Image
       class="about__photo"
       src={aboutStudio}
-      alt="Orion team on a studio shoot"
-      widths={[480, 720, 1040]}
+      alt="Campaign strategy dashboard, creator match app, and campaign brief notebook on a dark desk"
+      widths={[480, 768, 937]}
       sizes="(max-width: 900px) 92vw, 500px"
     />
     <div class="about__scrim" aria-hidden="true"></div>
-    <Image class="about__watermark" src={logoMark} alt="" width={80} densities={[1, 2]} />
   </figure>
 </section>
 
@@ -75,28 +75,15 @@ const attributes = ["Sleek", "Sophisticated", "Confident"];
     text-wrap: pretty;
   }
 
-  .about__attributes {
+  .about__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 14px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .about__pill {
-    font-size: 13px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-offwhite);
-    border: var(--border-pill);
-    border-radius: var(--radius-pill);
-    padding: 9px 20px;
   }
 
   .about__figure {
     position: relative;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 2 / 3;
     margin: 0;
     border: var(--border-default);
     border-radius: var(--radius-image);
@@ -134,15 +121,6 @@ const attributes = ["Sleek", "Sophisticated", "Confident"];
     background: linear-gradient(180deg, rgba(8, 7, 11, 0.05) 40%, rgba(8, 7, 11, 0.55));
   }
 
-  .about__watermark {
-    position: absolute;
-    bottom: 40px;
-    left: 40px;
-    width: 80px;
-    height: auto;
-    opacity: 0.9;
-  }
-
   @media (max-width: 900px) {
     .about {
       grid-template-columns: 1fr;
@@ -150,10 +128,8 @@ const attributes = ["Sleek", "Sophisticated", "Confident"];
       padding-block: 72px;
     }
 
-    .about__watermark {
-      bottom: 24px;
-      left: 24px;
-      width: 60px;
+    .about__actions .btn {
+      flex: 1 1 220px;
     }
   }
 </style>

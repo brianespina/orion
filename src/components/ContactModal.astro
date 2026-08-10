@@ -1,12 +1,12 @@
 ---
-import { contact } from "../data/site";
+import { contact, web3forms } from "../data/site";
 import IconMail from "./icons/IconMail.astro";
 import IconPhone from "./icons/IconPhone.astro";
 import IconWeb from "./icons/IconWeb.astro";
 
 const fields = [
-  { name: "firstName", label: "First name", type: "text", placeholder: "Aaron", autocomplete: "given-name" },
-  { name: "lastName", label: "Last name", type: "text", placeholder: "Antonio", autocomplete: "family-name" },
+  { name: "firstName", label: "First name", type: "text", placeholder: "Jordan", autocomplete: "given-name" },
+  { name: "lastName", label: "Last name", type: "text", placeholder: "Reyes", autocomplete: "family-name" },
 ] as const;
 
 // The prototype used the text glyphs ✉ ☎ ◉. Those fall back to the system
@@ -65,6 +65,14 @@ const details = [
 
       <div class="modal__panel">
         <form class="contact-form" data-contact-form>
+          {/* Web3Forms routes the submission to the inbox behind this key. The
+              key is a public identifier — it is meant to ship in the markup. */}
+          <input type="hidden" name="access_key" value={web3forms.accessKey} />
+          <input type="hidden" name="subject" value={web3forms.subject} />
+          <input type="hidden" name="from_name" value={web3forms.fromName} />
+          {/* Honeypot: Web3Forms discards any submission that fills this in. */}
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
           <div class="contact-form__row">
             {
               fields.map((field) => (
@@ -133,15 +141,8 @@ const details = [
 
         <div class="success" data-contact-success hidden>
           <span class="success__check" aria-hidden="true">✓</span>
-          <h3 class="success__title" data-success-title="sent">Request sent</h3>
-          <h3 class="success__title" data-success-title="handoff" hidden>Almost there</h3>
-          <p class="success__body" data-success-body="sent">
-            Thanks for reaching out. We'll be in touch by email shortly.
-          </p>
-          <p class="success__body" data-success-body="handoff" hidden>
-            We've opened your email app with the details filled in — send it over and we'll reply
-            shortly.
-          </p>
+          <h3 class="success__title">Request sent</h3>
+          <p class="success__body">Thanks for reaching out. We'll be in touch by email shortly.</p>
         </div>
       </div>
     </div>
@@ -451,9 +452,7 @@ const details = [
 </style>
 
 <script>
-  import { contact } from "../data/site";
-
-  const ENDPOINT = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
+  const ENDPOINT = "https://api.web3forms.com/submit";
   const FOCUSABLE =
     'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -468,11 +467,7 @@ const details = [
   if (modal && dialog && form && success && errorEl && submit && submitLabel) {
     let lastFocused: HTMLElement | null = null;
 
-    const showOutcome = (variant: "sent" | "handoff") => {
-      for (const node of success.querySelectorAll<HTMLElement>("[data-success-title], [data-success-body]")) {
-        const key = node.dataset.successTitle ?? node.dataset.successBody;
-        node.hidden = key !== variant;
-      }
+    const showOutcome = () => {
       form.hidden = true;
       success.hidden = false;
     };
@@ -539,47 +534,26 @@ const details = [
       if (event.target === modal) close();
     });
 
-    /** No endpoint configured — hand the message to the visitor's mail client. */
-    const composeMail = (data: FormData) => {
-      const name = [data.get("firstName"), data.get("lastName")].filter(Boolean).join(" ");
-      const body = [
-        `Name: ${name}`,
-        `Email: ${data.get("email")}`,
-        `Company: ${data.get("company") || "—"}`,
-        "",
-        String(data.get("message") ?? ""),
-      ].join("\n");
-
-      window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(
-        `Partnership enquiry — ${name}`,
-      )}&body=${encodeURIComponent(body)}`;
-    };
-
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
 
-      const data = new FormData(form);
       errorEl.hidden = true;
-
-      if (!ENDPOINT) {
-        composeMail(data);
-        showOutcome("handoff");
-        return;
-      }
-
       submit.disabled = true;
       submitLabel.textContent = "Sending…";
 
       try {
         const response = await fetch(ENDPOINT, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(Object.fromEntries(data)),
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
         });
 
-        if (!response.ok) throw new Error(`Request failed: ${response.status}`);
-        showOutcome("sent");
+        // Web3Forms reports rejections (bad key, spam) in the body, not the status.
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message ?? `Request failed: ${response.status}`);
+
+        showOutcome();
       } catch (error) {
         console.error(error);
         errorEl.hidden = false;

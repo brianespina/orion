@@ -69,15 +69,28 @@ inside its frame.
 
 ## Contact form
 
-The design specifies the form but not a backend. Set `PUBLIC_CONTACT_ENDPOINT`
-(see `.env.example`) to the URL that should receive the submission — the form
-POSTs JSON (`firstName`, `lastName`, `email`, `company`, `message`) and shows the
-"Request sent" panel on a 2xx, or an inline error with a mailto fallback otherwise.
+The form posts to [Web3Forms](https://web3forms.com), which forwards the
+submission to the inbox registered against the access key in `src/data/site.ts`.
+That key is a public identifier — it is meant to ship in the markup and grants
+no account access — so it is committed rather than kept in an env var. Point the
+form at a different inbox by swapping the key there.
 
-With no endpoint configured the form composes the message in the visitor's own
-mail client instead and shows an "Almost there" panel. That handoff copy is the
-one piece of text on the site that is not from the client-approved handoff — it
-covers a state the design didn't specify.
+Fields sent: `firstName`, `lastName`, `email`, `company`, `message`, plus the
+hidden `access_key`, `subject`, `from_name`, and a `botcheck` honeypot Web3Forms
+uses to drop bot submissions. Web3Forms answers `200` even when it rejects a
+submission, so the handler checks `success` in the response body and shows the
+inline error (with a mailto fallback) when it is false.
+
+## SEO
+
+`@astrojs/sitemap` writes `/sitemap-index.xml` (pointing at `/sitemap-0.xml`) on
+every build, from the `site` URL in `astro.config.mjs`. The 404 page is filtered
+out because it carries `noindex` — listing it would contradict its own meta.
+`public/robots.txt` points crawlers at the index; update that absolute URL if
+the domain ever changes.
+
+Each page also emits a canonical link, Open Graph and Twitter card tags, and the
+home page carries `Organization` JSON-LD.
 
 ## Fonts
 
